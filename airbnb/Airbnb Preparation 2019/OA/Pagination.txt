@@ -1,0 +1,50 @@
+1. Page Display
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=234655&highlight=airbnb
+http://massivealgorithms.blogspot.com/2015/11/buttercola-airbnb-page-display.html
+这个是别人的帖子。
+5
+13
+1,28,310.6,SF
+4,5,204.1,SF .1point3acres缃�
+20,7,203.2,Oakland
+6,8,202.2,SF
+6,10,199.1,SF
+1,16,190.4,SF
+6,29,185.2,SF
+7,20,180.1,SF
+6,21,162.1,SF
+2,18,161.2,SF
+2,30,149.1,SF
+3,76,146.2,SF
+2,14,141.1,San Jose
+
+以上是一个Sample 输入，和希望的输出，1,28,100.3,Paris 代表Houst ID, List ID, Points, City. 这是Airbnb根据用户搜索条件得出的一些list，然后我们要分页，第一行的5代表每一页最多展示5个list，13应该是代表有13个List.所以我们是要分成3页。规则是：每一页最多展示一个host的list，但是如果再没有其他host的list可以展示了，就按照原有的顺序填补就可（根据Points，也就是排名）。应得到的输出：
+希望输出：
+1,28,310.6,SF
+4,5,204.1,SF
+20,7,203.2,Oakland
+6,8,202.2,SF
+7,20,180.1,SF
+
+6,10,199.1,SF
+1,16,190.4,SF
+2,18,161.2,SF
+3,76,146.2,SF
+6,29,185.2,SF  -- 这时不得不重复了，从原有队列拉出第一个 鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�.
+
+6,21,162.1,SF
+2,30,149.1,SF
+2,14,141.1,San Jose
+
+
+感觉比较直接的做法可以把这些List全部放在一个LinkedList里，从头到尾扫 另一个HashSet记录每一页的重复值，重复就下一个，没重复就Remove from the list. 如果实在找不到不重的，就从头拉一个即可。
+当时我想复杂了，用了比较复杂的方法，但是还是过了。大家可以讨论看看。
+
+Followup:
+1. time complexity
+2. linkedlist 继续优化
+3. 每个host 有一个单独的sorted linkedlist。 每次往一个page里面加东西的时候，从每个host的linkedlist 里pop出来一条score最大的结果，丢到一个max_heap 里。  假设一共有 K 个distinct host， 那么一开始的时候max_heap 的size就是 K。  然后从这个 size 为K的 max_heap 里不断pop东西出来加到page里～   大概是这样 O(nlogK）
+
+
+
+2.
